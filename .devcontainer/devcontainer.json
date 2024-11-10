@@ -1,13 +1,11 @@
-
 {
-	"name": "C# (.NET)",
-	"image": "mcr.microsoft.com/devcontainers/dotnet:8.0",
-	"postCreateCommand": "dotnet restore --locked-mode && dotnet dev-certs https",
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"ms-dotnettools.csdevkit"
-			]
-		}
-	}
+  "name": "C# (.NET)",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:8.0",
+  "runArgs": ["--network", "deo-network"],
+  "postCreateCommand": "dotnet restore --locked-mode && dotnet dev-certs https",
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-dotnettools.csdevkit", "SonarSource.sonarlint-vscode"]
+    }
+  }
 }
