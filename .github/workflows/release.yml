@@ -27,3 +27,6 @@ jobs:
             - Second Change
           draft: false
           prerelease: false
+
+permissions:
+  contents: write
