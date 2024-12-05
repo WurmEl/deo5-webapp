@@ -1,0 +1,43 @@
+name: Pipeline
+
+run-name: 🔥 Run triggered by ${{ github.actor }} 😎🔥
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: backend-artifact
+          path: ./artifacts/backend
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref_name }} # tag name
+          release_name: Release ${{ github.ref_name }}
+          body: |
+            Automated release for tag: ${{ github.ref_name }}
+            - Includes the backend build artifact.
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Assets
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/backend
+          asset_name: backend-${{ github.ref_name }}.zip
+          asset_content_type: application/zip
