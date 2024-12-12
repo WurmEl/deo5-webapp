@@ -13,11 +13,25 @@ spec:
       labels:
         app: deo-backend
     spec:
-      # imagePullSecrets:
-      # - name: ghcr-login-secret
+      imagePullSecrets:
+        - name: ghcr-login-secret
       containers:
         - name: deo-backend
-          image: ghcr.io/jkarder/deo-webapp-backend:v1.1
+          image: ghcr.io/jkarder/deo-webapp-backend:latest
           args: ["--urls", "http://*:3000"]
           ports:
             - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: deo
+  name: deo-backend-svc
+spec:
+  clusterIP: None
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  selector:
+    app: deo-backend
